@@ -1,6 +1,6 @@
 # Tubes_PPW_Final
 
-npm list
+npm list / npm install
 
 1.bcrypt@5.1.1
 
