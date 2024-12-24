@@ -61,7 +61,7 @@ class AuthController extends Controller
     ]);
 
     // Mengirim data signup ke API Node.js
-    $response = Http::post('http://localhost:3000/signup', [
+    $response = Http::post('http://localhost:3000/api/users/signup', [
         'username' => $request->username, // Pastikan username disertakan
         'email' => $request->email,
         'password' => $request->password,
