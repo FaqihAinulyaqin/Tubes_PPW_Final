@@ -1,15 +1,49 @@
-# Tubes_PPW_Final
+JANLUP
 
-npm list / npm install
+*************(node-api)***************
 
-1.bcrypt@5.1.1
+npm install
 
-2.body-parser@1.20.3
+.env
+HOST=3000
 
-3.cors@2.8.5
+DB_HOST=localhost
 
-4.express@4.21.2
+DB_USER=root
 
-5.jsonwebtoken@9.0.2
+DB_PASSWORD=
 
-6.mysql2@3.12.0
+DB_NAME=tubes_everyday
+
+DB_PORT=3306
+
+JWT_SECRET=your_jwt_secret
+
+node src/index.js atau npm start
+
+
+
+**********(Tubes_Everyday)************
+
+composser install
+
+.env
+
+DB_CONNECTION=mysql
+
+DB_HOST=127.0.0.1
+
+DB_PORT=3306
+
+DB_DATABASE=tubes_everyday
+
+DB_USERNAME=root
+
+DB_PASSWORD=
+
+
+php artisan key:generate
+
+php artisan migrate
+
+

@@ -28,15 +28,17 @@ const login = async (req, res) => {
 
   try {
     const [found] = await modelUser.getUserByEmail(username);
+    console.log('User found:', found); // Debugging log
     if (found.length > 0) {
       const user = found[0];
       const match = await bcrypt.compare(password, user.password);
+      console.log('Password match:', match); // Debugging log
       if (match) {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
           expiresIn: "2h",
         });
         return res.status(200).json({
-          massage: "Login succesful",
+          message: "Login successful",
           token,
         });
       }
@@ -45,7 +47,7 @@ const login = async (req, res) => {
       message: "Username or password is incorrect",
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
