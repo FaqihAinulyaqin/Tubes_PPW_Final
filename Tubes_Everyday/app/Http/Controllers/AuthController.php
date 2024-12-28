@@ -24,7 +24,7 @@ class AuthController extends Controller
     // Menampilkan form Halaman Utama
     public function showHalamanUtama() 
     {
-        return view('welcome');
+        return view('dashboard');
     }
 
     // Proses login

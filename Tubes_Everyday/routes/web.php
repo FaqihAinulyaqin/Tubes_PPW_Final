@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProdukController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,3 +13,6 @@ Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup')
 Route::get('/dashboard', [AuthController::class, 'showHalamanUtama'])->name('dashboard');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
+
+Route::get('/getProduk', [ProdukController::class, 'getProduk']);
+Route::get('/dashboard', [ProdukController::class, 'showDashboard'])->name('dashboard');
