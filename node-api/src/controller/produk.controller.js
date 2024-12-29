@@ -1,7 +1,7 @@
 require("dotenv").config();
 const modelProduk = require("../models/produk");
 
-const getAllProduk = async (req, res) => {
+const getAllProdukHandler = async (req, res) => {
   try {
     const [found] = await modelProduk.getAllProduk();
     if (found.length > 0) {
@@ -18,18 +18,39 @@ const getAllProduk = async (req, res) => {
   }
 };
 
-const getProdukByCategory = async (req, res) => {
-  const { kategori } = req.body;
+const getProdukByCategoryHandler = async (req, res) => {
+  const { kategori } = req.params; // Mengambil kategori dari parameter URL
 
   try {
     const [found] = await modelProduk.getProdukByCategory(kategori);
     if (found.length > 0) {
+      return res.status(200).json({
+        message: "Menampilkan semua produk di kategori " + kategori,
+        data: found,
+      });
+    }
+    return res.status(404).json({
+      message: "Produk di kategori ini kosong",
+    });
+  } catch (error) {
+    console.error("Controller error:", error);
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+const getCategoryHandler = async (req, res) => {
+  try {
+    const [found] = await modelProduk.getCategory();
+    if (found.length > 0) {
       return res
         .status(200)
-        .json({ message: "Menampilkan semua produk", data: found });
+        .json({ message: "Menampilkan semua kategori", data: found });
     }
     return res.status(400).json({
-      message: "Produk di kategori ini kosong",
+      message: "Tidak ada kategori",
     });
   } catch (error) {
     console.error(error);
@@ -38,6 +59,7 @@ const getProdukByCategory = async (req, res) => {
 };
 
 module.exports = {
-  getAllProduk,
-  getProdukByCategory
+  getAllProdukHandler,
+  getProdukByCategoryHandler,
+  getCategoryHandler,
 };
