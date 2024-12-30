@@ -19,4 +19,10 @@ class Produk extends Model
         'kategori',
         'sub_kategori',
     ];
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class, 'product_id', 'id');
+    }
+
 }
