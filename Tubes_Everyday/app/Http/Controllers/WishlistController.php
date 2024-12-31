@@ -3,49 +3,54 @@
 namespace App\Http\Controllers;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class WishlistController extends Controller
 {
     //
-    public function index()
+    public function showWishlist()
     {
-        $userId = auth()->id();
-        $wishlists = Wishlist::with('product') 
-            ->where('user_id', $userId)
-            ->get();
+        $response = Http::get('http://localhost:3000/api/wishlist', [
+            'user_id' => auth()->id(),
+        ]);
 
-        return response()->json($wishlists);
+        if ($response->ok()) {
+            return response()->json($response->json());
+        }
+
+        return response()->json(['message' => 'Failed to fetch wishlist', 'error' => $response->body()], 500);
     }
 
-    // Menambahkan produk ke wishlist
-    public function store(Request $request)
+    public function postWishlist(Request $request)
     {
         $request->validate([
             'product_id' => 'required|exists:Produk,id',
         ]);
 
-        Wishlist::create([
+        $response = Http::post('http://localhost:3000/api/wishlist', [
             'user_id' => auth()->id(),
             'product_id' => $request->product_id,
         ]);
 
-        return response()->json(['message' => 'Produk berhasil ditambahkan ke wishlist']);
-    }
-
-    // Menghapus produk dari wishlist
-    public function destroy($id)
-    {
-        $wishlist = Wishlist::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->first();
-
-        if (!$wishlist) {
-            return response()->json(['message' => 'Wishlist tidak ditemukan'], 404);
+        if ($response->ok()) {
+            return response()->json($response->json());
         }
 
-        $wishlist->delete();
-
-        return response()->json(['message' => 'Produk berhasil dihapus dari wishlist']);
+        return response()->json(['message' => 'Failed to add product to wishlist', 'error' => $response->body()], 500);
     }
+
+    public function deleteWishlist($id)
+    {
+        $response = Http::delete("http://localhost:3000/api/wishlist/{$id}", [
+            'user_id' => auth()->id(),
+        ]);
+
+        if ($response->ok()) {
+            return response()->json($response->json());
+        }
+
+        return response()->json(['message' => 'Failed to delete wishlist item', 'error' => $response->body()], 500);
+    }
+
 
 }
