@@ -17,4 +17,6 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::get('/getProduk', [ProdukController::class, 'getProduk']);
 Route::get('/getProduk/{kategori}', [ProdukController::class, 'getProdukbyCategory']);
 Route::get('/getCategory', [ProdukController::class, 'getCategory']);
-Route::get('/dashboard', [ProdukController::class, 'showDashboard'])->name('dashboard');
+
+Route::get('/search', [ProdukController::class, 'search'])->name('search.produk');
+Route::post('/signup', [AuthController::class, 'signup']);

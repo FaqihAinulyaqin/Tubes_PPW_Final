@@ -20,9 +20,17 @@
                     <!-- Data Kategori akan dimuat di sini -->
                 </div>
             </div>
-        </div>           
+        </div>
+        <div class="search-form">
+        <form action="{{ route('search.produk') }}" method="GET" id="searchForm">
+            <input type="text" name="searchTerm" placeholder="Cari produk..." id="searchInput" required>
+            <button type="submit" class="search-button">
+                <i class="fas fa-search search-icon"></i>
+            </button>
+        </form>
+            </form>
+        </div>   
         <div class="nav">
-            <a href="#"><i class="fas fa-search"></i></a>
             <a href="#"><i class="fas fa-heart"></i></a>
             <a href="#"><i class="fas fa-user"></i> Username </a>
             <a class="sell" href="#">Sell</a>
