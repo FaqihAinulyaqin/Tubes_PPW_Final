@@ -12,13 +12,20 @@ class Produk extends Model
     protected $table = 'Produk';
 
     protected $fillable = [
+        'idPenjual',
         'img_path',
         'nama_produk',
         'harga_produk',
         'stok',
         'kategori',
         'sub_kategori',
+        'deskripsi'
     ];
+
+    public function penjual()
+    {
+        return $this->belongsTo(User::class, 'idPenjual');
+    }
 
     public function wishlists()
     {

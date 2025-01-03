@@ -16,12 +16,13 @@ const getUserByID = (id) => {
   return conn.execute(QUERY, [id]);
 };
 
-const addUser = async (username, email, plainPassword) => {
-  const QUERY = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)";
-  const salt = 10;
-  const time = Date.now();
-  const hashed = await bcrypt.hash(plainPassword, salt);
-  return conn.execute(QUERY, [username, email, hashed, time]);
+const addUser = async (username, email, plainPassword, nomorWA) => {
+    const QUERY = "INSERT INTO users (profilePic, username, email, password, nomorWA, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+    const salt = 10;
+    const time = Date.now();
+    const profilePicture = "/images/auth/PP.png"
+    const hashed = await bcrypt.hash(plainPassword, salt);
+    return conn.execute(QUERY, [profilePicture, username, email, hashed, nomorWA, time]);
 };
 
 module.exports = {

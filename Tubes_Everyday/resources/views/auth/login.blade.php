@@ -69,7 +69,7 @@
                     <form method="POST" action="/login">
                         @csrf
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username SSO</label>
+                            <label for="username" class="form-label">Email SSO</label>
                             <input type="text" class="form-control" name="username" placeholder="Masukan username" required>
                         </div>
                         <div class="mb-3">
@@ -78,7 +78,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </form>
-                    <p class="text-center">Belum punya akun? <a href="{{ route('login') }}">Login</a></p>
+                    <p class="text-center">Belum punya akun? <a href="{{ route('signup') }}">Sign Up</a></p>
                 </div>
             </div>
         </div>

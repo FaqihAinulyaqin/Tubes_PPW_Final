@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const authModel = require("../controller/produk.controller");
+const produkController = require("../controller/produk.controller");
 
-router.get("/getProduk", authModel.getAllProdukHandler);
-router.get("/getProduk/:kategori", authModel.getProdukByCategoryHandler);
-router.get("/getCategory", authModel.getCategoryHandler);
+router.get("/getProduk", produkController.getAllProdukHandler);
+router.get("/getProdukExDesc", produkController.getAllProdukExDescHandler);
+router.get("/getProduk/:id", produkController.getProdukByIdHandler)
+router.get("/getProduk/:kategori", produkController.getProdukByCategoryHandler);
+router.get("/getCategory", produkController.getCategoryHandler);
+router.post("/addProduk", produkController.addProdukHandler);
 
 module.exports = router;

@@ -22,7 +22,7 @@ class AuthController extends Controller
     }
 
     // Menampilkan form Halaman Utama
-    public function showHalamanUtama() 
+    public function showHalamanUtama()
     {
         return view('dashboard');
     }
@@ -46,6 +46,15 @@ class AuthController extends Controller
             // Periksa jika login berhasil
             if ($response->successful()) {
                 // Jika login berhasil, redirect ke halaman dashboard
+                $userData = $response->json();
+                session([
+                    'user_id' => $userData['user']['id'],
+                    'profilePic'=> $userData['user']['profilePic'],
+                    'username' => $userData['user']['username'],
+                    'email' => $userData['user']['email'],
+                    'nomorWA' => $userData['user']['nomorWA'],
+                    'token' => $userData['token']
+                ]);
                 return redirect()->route('dashboard'); // Ganti dengan route yang sesuai
             }
 
@@ -64,7 +73,8 @@ class AuthController extends Controller
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users', // Menambahkan validasi untuk username
             'email' => 'required|email',
-            'password' => 'required|min:8', // Password confirmation sudah otomatis ada dari form
+            'password' => 'required|min:8',
+            'nomorWA' => 'required|string' // Password confirmation sudah otomatis ada dari form
         ]);
 
         // Mengirim data signup ke API Node.js
@@ -73,6 +83,7 @@ class AuthController extends Controller
                 'username' => $request->username, // Pastikan username disertakan
                 'email' => $request->email,
                 'password' => $request->password,
+                'nomorWA' => $request->nomorWA
             ]);
 
             // Periksa jika signup berhasil

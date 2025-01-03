@@ -11,7 +11,7 @@
     <title>Halaman Utama</title>
 </head>
 <body>
-    <div class="container header">
+<div class="container header">
         <div>
             <img alt="Logo" height="40" src="{{ asset('images/auth/Group 39.png') }}" width="40" />
             <div class="dropdown">
@@ -20,9 +20,16 @@
                     <!-- Data Kategori akan dimuat di sini -->
                 </div>
             </div>
-        </div>           
+        </div>
+        <div class="search-form">
+            <form action="{{ route('search.produk') }}" method="GET" id="searchForm">
+                <input type="text" name="searchTerm" placeholder="Cari produk..." id="searchInput" required>
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search search-icon"></i>
+                </button>
+            </form>
+        </div>
         <div class="nav">
-            <a href="#"><i class="fas fa-search"></i></a>
             <a href="#"><i class="fas fa-heart"></i></a>
             <a href="#"><i class="fas fa-user"></i> Username </a>
             <a class="sell" href="#">Sell</a>
@@ -68,7 +75,7 @@
                 });
 
             // Fetch products
-            const productApiUrl = '/getProduk';
+            const productApiUrl = '/getProdukExDesc';
             $.getJSON(productApiUrl)
                 .done(function(response) {
                     const products = response.data || [];
@@ -78,6 +85,7 @@
                         let rows = '';
                         let rowCount = 0;
                         products.forEach(function(item) {
+                            const productId = item.id;
                             const productName = item.nama_produk || "Unknown Product";
                             const productImage = item.img_path || 'https://via.placeholder.com/150';
                             const productPrice = item.harga_produk ? `Rp ${parseInt(item.harga_produk).toLocaleString()}` : "Price not available";
@@ -92,12 +100,15 @@
                                     <div class="product-item">
                                         <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                                         <div class="product-image">
-                                            <img alt="Product Image" height="200" src="${productImage}" width="150" />
+                                            <img alt="Product Image" height="200" src="${productImage}" width="auto" />
                                         </div>
                                         <div class="info">
                                             <div class="name">${productName}</div>
                                             <div class="price">${productPrice}</div>
                                             <div class="description">${productCategory}</div>
+                                        </div>
+                                        <div class="detail-button">
+                                            <a href="{{ route('halamanProduk') }}?id=${productId}">Lihat Detail</a>
                                         </div>
                                     </div>
                                 </td>

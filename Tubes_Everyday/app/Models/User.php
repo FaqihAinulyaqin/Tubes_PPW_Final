@@ -10,9 +10,11 @@ class User extends Model
     use HasFactory;
 
     protected $fillable = [
+        'profilePic',
         'username',
         'email',
         'password',
+        'nomorWA'
     ];
 }
 
