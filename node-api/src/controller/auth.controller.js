@@ -24,10 +24,10 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const [found] = await modelUser.getUserByEmail(username);
+    const [found] = await modelUser.getUserByEmail(email);
     if (found.length > 0) {
       const user = found[0];
       const match = await bcrypt.compare(password, user.password);

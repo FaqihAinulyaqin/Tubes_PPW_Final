@@ -24,6 +24,13 @@ const addUser = async (username, email, plainPassword) => {
   return conn.execute(QUERY, [username, email, hashed, time]);
 };
 
+const updateFotoProfile = async (id, img_path) => {
+  const QUERY = ""
+}
+
+// 1 FE laravel BE node
+// 2 FE node BE laravel
+
 module.exports = {
   getAllUser,
   getUserByEmail,
