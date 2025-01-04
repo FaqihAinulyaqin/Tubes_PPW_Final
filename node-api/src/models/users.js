@@ -16,12 +16,11 @@ const getUserByID = (id) => {
   return conn.execute(QUERY, [id]);
 };
 
-const addUser = async (username, email, plainPassword) => {
-  const QUERY = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)";
+const addUser = async (nama_depan, nama_belakang, username, email, plainPassword) => {
+  const QUERY = "INSERT INTO users (nama_depan, nama_belakang, username, email, password, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
   const salt = 10;
-  const time = Date.now();
   const hashed = await bcrypt.hash(plainPassword, salt);
-  return conn.execute(QUERY, [username, email, hashed, time]);
+  return conn.execute(QUERY, [nama_depan, nama_belakang, username, email, hashed]);
 };
 
 const updateFotoProfile = async (id, img_path) => {

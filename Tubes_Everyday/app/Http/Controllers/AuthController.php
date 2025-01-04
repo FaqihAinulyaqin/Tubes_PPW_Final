@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -21,59 +22,94 @@ class AuthController extends Controller
         return view('auth.signup');
     }
 
-    //Menampilkan form Halaman Utama
-    public function showHalamanUtama() 
+    // Menampilkan form Halaman Utama
+    public function showHalamanUtama()
     {
-        return view('welcome');
+        return view('dashboard');
     }
+
     // Proses login
     public function login(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
-            'username' => 'required_without:email|string|max:255',
+            'email' => 'required_without:email|string|max:255',
             'password' => 'required',
         ]);
 
-        // Mengirim data login ke API Node.js
-        $response = Http::post('http://localhost:3000/api/users/login', [
-            'username' => $request->username,
-            'password' => $request->password,
-        ]);
+        try {
+            $response = Http::post('http://localhost:3000/api/auth/login', [
+                'email' => $request->email,
+                'password' => $request->password,
+            ]);
+            $body = json_decode($response->getBody(), true);
+            $token = $body['token'];
 
-        if ($response->successful()) {
-            // Jika login berhasil, redirect ke halaman dashboard
-            return redirect()->route('dashboard'); // Ganti dengan route yang sesuai
+            session(['token' => $token]);
+
+            if ($response->successful()) {
+
+                return redirect()->route('dashboard');
+            }
+
+            return back()->withErrors(['message' => 'Email atau password salah.']);
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Tidak dapat menghubungi server Node.js.']);
         }
-
-        // Jika login gagal, kembali dengan error
-        return back()->withErrors(['message' => 'Email atau password salah.']);
     }
 
     // Proses signup
     public function signup(Request $request)
-{
-    // Validasi input
-    $validated = $request->validate([
-        'username' => 'required|string|max:255|unique:users', // Menambahkan validasi untuk username
-        'email' => 'required|email',
-        'password' => 'required|min:8', // Password confirmation sudah otomatis ada dari form
-    ]);
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'username' => 'required|string|max:255|unique:users', // Menambahkan validasi untuk username
+            'email' => 'required|email',
+            'password' => 'required|min:8', // Password confirmation sudah otomatis ada dari form
+        ]);
 
-    // Mengirim data signup ke API Node.js
-    $response = Http::post('http://localhost:3000/api/users/signup', [
-        'username' => $request->username, // Pastikan username disertakan
-        'email' => $request->email,
-        'password' => $request->password,
-    ]);
+        // Mengirim data signup ke API Node.js
+        try {
+            $response = Http::post('http://localhost:3000/api/auth/signup', [
+                'username' => $request->username, // Pastikan username disertakan
+                'email' => $request->email,
+                'password' => $request->password,
+            ]);
 
-    if ($response->successful()) {
-        // Jika signup berhasil, redirect ke login
-        return redirect()->route('login')->with('status', 'Signup berhasil! Silakan login.');
+            // Periksa jika signup berhasil
+            if ($response->successful()) {
+                // Jika signup berhasil, redirect ke login
+                return redirect()->route('login')->with('status', 'Signup berhasil! Silakan login.');
+            }
+
+            // Jika signup gagal, kembali dengan error
+            return back()->withErrors(['message' => 'Signup gagal. Silakan coba lagi.']);
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan koneksi, beri respons error
+            return back()->withErrors(['message' => 'Tidak dapat menghubungi server Node.js.']);
+        }
     }
 
-    // Jika signup gagal, kembali dengan error
-    return back()->withErrors(['message' => 'Signup gagal. Silakan coba lagi.']);
-}
+    public function me()
+    {
+        $token = session('token');
 
+        if (!$token) {
+            return back()->withErrors(['message' => 'Token tidak ditemukan, silakan login ulang.']);
+        }
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+            ])->get('http://localhost:3000/api/auth/me');
+            Log::info('API Response:', $response->json());
+            if ($response->successful()) {
+
+                return $response->json();
+            }
+
+            return back()->withErrors(['message' => 'Gagal mengambil data dari API.']);
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Terjadi kesalahan saat mengakses API.']);
+        }
+    }
 }

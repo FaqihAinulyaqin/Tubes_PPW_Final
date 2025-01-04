@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { nama_depan, nama_belakang, username, email, password } = req.body;
   try {
     const [cekUser] = await modelUser.getUserByEmail(email);
 
@@ -15,7 +15,7 @@ const signup = async (req, res) => {
       });
     }
 
-    await modelUser.addUser(username, email, password);
+    await modelUser.addUser(nama_depan, nama_belakang, username, email, password);
     res.status(200).json({ message: "User registered successfully" });
   } catch (error) {
     console.log(error)
@@ -36,7 +36,7 @@ const login = async (req, res) => {
           expiresIn: "2h",
         });
         return res.status(200).json({
-          massage: "Login succesful",
+          message: "Login successful",
           token,
         });
       }
@@ -45,18 +45,18 @@ const login = async (req, res) => {
       message: "Username or password is incorrect",
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 const me = async (req, res) => {
   try {
-    const response = await modelUser.getUserByID(req.id);
-    if (!response) {
-      return res.status(404).json({ message: "User not found", data: null });
+    const [response] = await modelUser.getUserByID(req.id);
+    if (response.length > 0) {
+      return res.status(200).json({ message: "User found", data: response });
     }
-    res.status(200).json({ message: "User found", data: response });
+    return res.status(404).json({ message: "User not found", data: null });
   } catch (error) {
     res.status(500).json({ message: error.message, data: null });
   }
