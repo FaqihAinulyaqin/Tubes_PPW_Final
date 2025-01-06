@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('produk', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idPenjual');
             $table->string('img_path');
-            $table->string('nama_profuk');
+            $table->string('nama_produk');
             $table->integer('harga_produk');
             $table->integer('stok');
             $table->string('kategori');
             $table->string('sub_kategori');
+            $table->string('deskripsi');
             $table->timestamps();
+            
+            $table->foreign('idPenjual')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

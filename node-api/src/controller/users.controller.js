@@ -1,69 +1,121 @@
 require("dotenv").config();
 const modelUser = require("../models/users");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} = require("firebase/storage");
+const firebaseConfig = require("../config/firebase.config");
+const path = require("path");
 
-const signup = async (req, res) => {
-  const { nama_depan, nama_belakang, username, email, password } = req.body;
+const getAllUser = async (req, res) => {
   try {
-    const [cekUser] = await modelUser.getUserByEmail(email);
-
-    if (cekUser.length > 0) {
-      return res.status(400).json({
-        message: "email sudah terdaftar",
-        success: false,
-      });
+    const [dataUser] = await modelUser.getAllUser();
+    if (dataUser.length > 0) {
+      res
+        .status(200)
+        .json({ message: "menampilkan semua data user", data: dataUser });
+    } else {
+      res.status(200).json({ message: "tidak ada data user" });
     }
-
-    await modelUser.addUser(nama_depan, nama_belakang, username, email, password);
-    res.status(200).json({ message: "User registered successfully" });
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
-
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const [found] = await modelUser.getUserByEmail(email);
-    if (found.length > 0) {
-      const user = found[0];
-      const match = await bcrypt.compare(password, user.password);
-      if (match) {
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-          expiresIn: "2h",
-        });
-        return res.status(200).json({
-          message: "Login successful",
-          token,
-        });
-      }
-    }
-    return res.status(400).json({
-      message: "Username or password is incorrect",
-    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-const me = async (req, res) => {
+const updateProfile = async (req, res) => {
+  const id = req.id;
+  const foto = req.file;
+  const {
+    nama_depan = null,
+    nama_belakang = null,
+    email = null,
+    no_telpon = null,
+    alamat = null,
+  } = req.body;
+
   try {
-    const [response] = await modelUser.getUserByID(req.id);
-    if (response.length > 0) {
-      return res.status(200).json({ message: "User found", data: response });
+    const [userData] = await modelUser.getUserByID(id);
+    const found = userData[0];
+    if (!found) {
+      return res.status(404).json({ message: "User tidak ditemukan." });
     }
-    return res.status(404).json({ message: "User not found", data: null });
+
+    let profilePictURL = found.img_path
+
+    if (foto) {
+      if (found.img_path) {
+        const filePath = found.img_path.split("/o/")[1].split("?")[0];
+        const decodedPath = decodeURIComponent(filePath);
+
+        const { firebaseStorage } = await firebaseConfig();
+        const fileRef = ref(firebaseStorage, decodedPath);
+
+        try {
+          await deleteObject(fileRef);
+        } catch (err) {
+          console.error("Gagal menghapus gambar lama:", err.message);
+          return res.status(500).json({
+            message: "Gagal menghapus gambar lama.",
+            error: err.message,
+          });
+        }
+      }
+
+      profilePictURL = await uploadNewProfilePicture(foto);
+    }
+
+    await modelUser.updateProfile(
+      id,
+      nama_depan,
+      nama_belakang,
+      no_telpon,
+      alamat,
+      email,
+      profilePictURL
+    );
+
+    res.status(200).json({
+      message: "Profile berhasil diperbarui.",
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message, data: null });
+    console.error("Error saat memperbarui profil:", error);
+    res
+      .status(500)
+      .json({ message: "Terjadi kesalahan saat memperbarui profil." });
   }
 };
 
+const uploadNewProfilePicture = async (profilePictFile) => {
+  if (!profilePictFile) {
+    throw new Error("File tidak valid");
+  }
+
+  const profilePictFileExtension = path.extname(profilePictFile.originalname);
+  const profilePictFileOriginalName = path.basename(
+    profilePictFile.originalname,
+    profilePictFileExtension
+  );
+  const newProfilePictfileName = `${Date.now()}_${profilePictFileOriginalName}${profilePictFileExtension}`;
+  const { firebaseStorage } = await firebaseConfig();
+  const storageRef = ref(
+    firebaseStorage,
+    `amar-project/foto-profile-user/${newProfilePictfileName}`
+  );
+
+  const profilePictBuffer = profilePictFile.buffer;
+
+  const resultProfilePict = await uploadBytes(storageRef, profilePictBuffer, {
+    contentType: profilePictFile.mimetype,
+  });
+
+  return await getDownloadURL(resultProfilePict.ref);
+};
+
 module.exports = {
-  login,
-  me,
-  signup,
+  getAllUser,
+  updateProfile,
 };

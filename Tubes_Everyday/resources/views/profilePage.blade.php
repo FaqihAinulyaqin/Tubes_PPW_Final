@@ -72,7 +72,7 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email">
 
-                <label for="notelp">No Telepon</label>
+                <label for="notelp">No Telepon <span>(awal angka +62)</span></label>
                 <input type="tel" id="notelp" name="no_telpon">
 
                 <label for="alamat">Alamat</label>
@@ -102,11 +102,11 @@
                     } else {
                         const user = response.data[0];
                         $('#username').append(user.username);
-                        $('#namaDepan').val(${user.nama_depan});
-                        $('#namaBelakang').val(${user.nama_belakang});
-                        $('#email').val(${user.email});
-                        $('#notelp').val(${user.no_telpon});
-                        $('#alamat').val(${user.alamat});
+                        $('#namaDepan').val(`${user.nama_depan}`);
+                        $('#namaBelakang').val(`${user.nama_belakang}`);
+                        $('#email').val(`${user.email}`);
+                        $('#notelp').val(`${user.no_telpon}`);
+                        $('#alamat').val(`${user.alamat}`);
                         const imgSrc = user.img_path ? user.img_path : '{{ asset('images/default-img.png') }}';
                         $('#imgUser').attr('src', imgSrc);
                     }
@@ -134,6 +134,7 @@
             });
         });
         $('#updateProfileForm').submit(function(event) {
+            // Mencegah form untuk langsung disubmit
             event.preventDefault();
 
             const namaDepan = $('#namaDepan').val().trim();
@@ -145,17 +146,19 @@
             const fields = [namaDepan, namaBelakang, email, notelp, alamat];
             const fieldNames = ['Nama Depan', 'Nama Belakang', 'Email', 'No Telepon', 'Alamat'];
 
+            // Periksa setiap field, jika ada yang kosong, tampilkan SweetAlert dan hentikan proses submit
             for (let i = 0; i < fields.length; i++) {
                 if (fields[i] === '') {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: ${fieldNames[i]} harus diisi!,
+                        text: `${fieldNames[i]} harus diisi!`,
                     });
-                    return; 
+                    return; // Berhenti eksekusi dan tidak submit form
                 }
             }
 
+            // Jika semua field terisi, form akan disubmit
             this.submit();
         });
 

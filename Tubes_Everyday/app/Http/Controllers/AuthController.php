@@ -64,7 +64,8 @@ class AuthController extends Controller
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users', // Menambahkan validasi untuk username
             'email' => 'required|email',
-            'password' => 'required|min:8', // Password confirmation sudah otomatis ada dari form
+            'password' => 'required|min:8',
+            'nomorWA' => 'required|string' // Password confirmation sudah otomatis ada dari form
         ]);
 
         // Mengirim data signup ke API Node.js
@@ -73,6 +74,7 @@ class AuthController extends Controller
                 'username' => $request->username, // Pastikan username disertakan
                 'email' => $request->email,
                 'password' => $request->password,
+                'nomorWA' => $request->nomorWA
             ]);
 
             // Periksa jika signup berhasil
@@ -112,3 +114,4 @@ class AuthController extends Controller
         }
     }
 }
+

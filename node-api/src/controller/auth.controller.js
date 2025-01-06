@@ -38,6 +38,14 @@ const login = async (req, res) => {
         return res.status(200).json({
           message: "Login successful",
           token,
+        //   user: {
+        //     token: token,
+        //     id: user.id,
+        //     profilePic: user.profilePic,
+        //     username: user.username,
+        //     email: user.email,
+        //     nomorWA: user.nomorWA
+        // }
         });
       }
     }

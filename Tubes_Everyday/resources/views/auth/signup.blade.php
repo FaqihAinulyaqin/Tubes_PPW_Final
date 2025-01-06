@@ -6,31 +6,31 @@
     <title>Halaman SignUp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-    .login-section {
-      background-color: #e3e9f8;
-      border-radius: 20px;
-      padding: 50px 40px;
-      width: 580px;
-      height: 650px;
-    }
-    .image-section img {
-      max-width: 100%;
-      height: auto;
-    }
-    .container-wrapper {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .women-shopping-image {
-        width: 455px; 
-        height: 439px;
-    }
-    .security {
-        width: 250px;
-    }
-  </style>
+        .login-section {
+            background-color: #e3e9f8;
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 580px;
+            height: 800px;
+        }
+        .image-section img {
+            max-width: 100%;
+            height: auto;
+        }
+        .container-wrapper {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .women-shopping-image {
+            width: 455px;
+            height: 439px;
+        }
+        .security {
+            width: 250px;
+        }
+    </style>
 </head>
 <body>
     @if($errors->any())
@@ -73,6 +73,10 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomorWA" class="form-label">nomor Whatsapp</label>
+                            <input type="text" class="form-control" name="nomorWA" placeholder="Enter your phone number" required>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">SignUp</button>
                     </form>

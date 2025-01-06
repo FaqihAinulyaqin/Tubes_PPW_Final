@@ -17,19 +17,15 @@ const getUserByID = (id) => {
 };
 
 const addUser = async (
-  nama_depan,
-  nama_belakang,
   username,
   email,
   plainPassword
 ) => {
   const QUERY =
-    "INSERT INTO users (nama_depan, nama_belakang, username, email, password, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
+    "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())";
   const salt = 10;
   const hashed = await bcrypt.hash(plainPassword, salt);
   return conn.execute(QUERY, [
-    nama_depan,
-    nama_belakang,
     username,
     email,
     hashed,
@@ -63,5 +59,5 @@ module.exports = {
   getUserByEmail,
   getUserByID,
   addUser,
-  updateProfile,
+  updateProfile
 };
