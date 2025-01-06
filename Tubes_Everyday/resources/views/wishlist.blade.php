@@ -36,7 +36,10 @@
     </div>
     <div class="container wishlist">
         <h2>Your Wishlist</h2>
-        <div class="row">
+        <table id="data-table">
+            <!-- Data Produk akan dimuat di sini -->
+        </table>
+        <!-- <div class="row">
             @foreach ($wishlists as $item)
                 <div class="col-md-3 product-card">
                     <div class="product-item">
@@ -49,7 +52,7 @@
                     </div>
                 </div>
             @endforeach
-        </div>
+        </div> -->
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -64,11 +67,11 @@
                         let rows = '';
                         let rowCount = 0;
                         products.forEach(function(item) {
-                            const productId = item.id;
-                            const productName = item.nama_produk || "Unknown Product";
-                            const productImage = `/images/product/${item.img_path}`;
-                            const productPrice = item.harga_produk ? `Rp ${parseInt(item.harga_produk).toLocaleString()}` : "Price not available";
-                            const productCategory = item.kategori || "Unknown Category";
+                            const productId = item.product_id;
+                            const productName = item.product_nama_produk || "Unknown Product";
+                            const productImage = `/images/product/${item.product_img_path}`;
+                            const productPrice = item.product_harga_produk ? `Rp ${parseInt(item.product_harga_produk).toLocaleString()}` : "Price not available";
+                            const productCategory = item.product_kategori || "Unknown Category";
 
                             if (rowCount === 0) {
                                 rows += '<tr>';
@@ -77,7 +80,6 @@
                             rows += `
                                 <td>
                                     <div class="product-item">
-                                        <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                                         <div class="product-image">
                                             <img alt="Product Image" height="200" src="${productImage}" width="auto" />
                                         </div>
@@ -89,6 +91,7 @@
                                         <div class="detail-button">
                                             <a href="{{ route('halamanProduk') }}?id=${productId}">Lihat Detail</a>
                                         </div>
+                                        <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                                     </div>
                                 </td>
                             `;
