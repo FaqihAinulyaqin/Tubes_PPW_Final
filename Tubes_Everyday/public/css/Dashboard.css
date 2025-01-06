@@ -95,7 +95,7 @@ body {
     justify-content: space-around;
 }
 .recommendation table td {
-    width: 350px;
+    width: auto;
     background-color: white;
     border-radius: 10px;
     padding: 10px;

@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    
 
     <title>Halaman Utama</title>
 </head>
@@ -31,8 +32,8 @@
         </div>
         <div class="nav">
             <a href="#"><i class="fas fa-heart"></i></a>
-            <a href="#"><i class="fas fa-user"></i> Username </a>
-            <a class="sell" href="#">Sell</a>
+            <a href="#"><i class="fas fa-user"></i>  </a>
+            <a class="sell" href="{{ route('ShowAddProduk') }}">Sell</a>
         </div>
     </div>
     <div class="container promo">
@@ -87,7 +88,7 @@
                         products.forEach(function(item) {
                             const productId = item.id;
                             const productName = item.nama_produk || "Unknown Product";
-                            const productImage = item.img_path || 'https://via.placeholder.com/150';
+                            const productImage = `/images/product/${item.img_path}`;
                             const productPrice = item.harga_produk ? `Rp ${parseInt(item.harga_produk).toLocaleString()}` : "Price not available";
                             const productCategory = item.kategori || "Unknown Category";
 
@@ -153,7 +154,7 @@
                             let rowCount = 0;
                             products.forEach(function(item) {
                                 const productName = item.nama_produk || "Unknown Product";
-                                const productImage = item.img_path || 'https://via.placeholder.com/150';
+                                const productImage = `/images/product/${item.img_path}`;
                                 const productPrice = item.harga_produk ? `Rp ${parseInt(item.harga_produk).toLocaleString()}` : "Price not available";
                                 const productCategory = item.kategori || "Unknown Category";
 
@@ -166,7 +167,7 @@
                                         <div class="product-item">
                                             <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                                             <div class="product-image">
-                                                <img alt="Product Image" height="200" src="${productImage}" width="150" />
+                                                <img alt="Product Image" height="200" src="${productImage}" width="auto" />
                                             </div>
                                             <div class="info">
                                                 <div class="name">${productName}</div>

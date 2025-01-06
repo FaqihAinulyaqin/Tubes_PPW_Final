@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const modelProduk = require("../models/produk");
-const JWT_SECRET = "your_jwt_secret_key";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const getAllProdukHandler = async (req, res) => {
   try {
@@ -102,32 +102,48 @@ const getCategoryHandler = async (req, res) => {
 };
 
 const addProdukHandler = async (req, res) => {
-  const { img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi } = req.body;
-  const token = req.headers["authorization"]?.split(" ")[1];
+  const token = req.headers["authorization"]?.split(" ")[1]; // Ambil token dari header
 
   if (!token) {
     return res.status(403).json({ message: "Token tidak ditemukan" });
   }
 
-  if (!img_path || !nama_produk || !harga_produk || !stok || !kategori || !sub_kategori || !deskripsi) {
-      return res.status(400).json({ message: "Semua field wajib diisi" });
-  }
-
   try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      const idPenjual = decoded.id;
+    // Verifikasi token
+    
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const idPenjual = decoded.id;
 
-      const [result] = await modelProduk.addProduk(idPenjual, img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi);
-      console.log("Hasil addProduk:", result);
+    // Ambil data produk dari body
+    const { img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi } = req.body;
 
-      if (result.affectedRows > 0) {
-          return res.status(201).json({ message: "Produk berhasil ditambahkan" });
-      }
+    if (!img_path || !nama_produk || !harga_produk || !stok || !kategori || !sub_kategori || !deskripsi) {
+      return res.status(400).json({ message: "Semua field wajib diisi" });
+    }
 
-      return res.status(400).json({ message: "Gagal menambahkan produk" });
+    const [result] = await modelProduk.addProduk(
+      idPenjual,
+      img_path,
+      nama_produk,
+      harga_produk,
+      stok,
+      kategori,
+      sub_kategori,
+      deskripsi
+    );
+    console.log("Database Result:", result);
+
+    console.log("Body request:", req.body);
+
+
+    if (result.affectedRows > 0) {
+      return res.status(201).json({ message: "Produk berhasil ditambahkan" });
+    }
+
+    return res.status(400).json({ message: "Gagal menambahkan produk" });
   } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Server error", error: error.message });
+    console.error(error);
+    return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

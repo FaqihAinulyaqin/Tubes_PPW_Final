@@ -28,7 +28,9 @@
         <div class="row" style="height: 500px;">
             <div class="col-md-6">
                 <div class="image-container">
-                    <img src="{{ $product['img_path'] }}" alt="{{ $product['nama_produk'] }}" class="product-image">
+                    <img 
+                        alt="Product Image" src="{{ $product['img_path'] ? asset('images/product/' . $product['img_path']) : 'https://via.placeholder.com/150' }}" height="200" width="auto" 
+                    />
                 </div>
             </div>
             <div class="col-md-6">

@@ -43,8 +43,13 @@
                     <div class="product-item">
                         <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                         <div class="product-image">
-                            <img alt="Product Image" height="200" src="{{ $product['img_path'] ?? 'https://via.placeholder.com/150' }}" width="auto" />
-                        </div>
+                            <img 
+                                alt="Product Image" 
+                                height="200" 
+                                src="{{ $product['img_path'] ? asset('images/product/' . $product['img_path']) : 'https://via.placeholder.com/150' }}" 
+                                width="auto" 
+                            />
+                            </div>
                         <div class="info">
                             <div class="name">{{ $product['nama_produk'] ?? 'Unknown Product' }}</div>
                             <div class="price">Rp {{ number_format($product['harga_produk'] ?? 0, 0, ',', '.') }}</div>

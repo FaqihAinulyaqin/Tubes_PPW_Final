@@ -57,9 +57,18 @@ const getCategory = () => {
 }
 
 const addProduk = (idPenjual, img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi) => {
-    const QUERY = "INSERT INTO produk (idPenjual, img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    return conn.execute(QUERY, [idPenjual, img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi]);
+  const QUERY = "INSERT INTO produk (idPenjual, img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  return conn.execute(QUERY, [idPenjual, img_path, nama_produk, harga_produk, stok, kategori, sub_kategori, deskripsi])
+    .then(([result]) => {
+      console.log("Insert Result:", result);
+      return [result];
+    })
+    .catch(error => {
+      console.error("Database error:", error);
+      throw new Error("Failed to insert data into the database");
+    });
 };
+
 
 const searchProduk = async (searchTerm) => {
   const QUERY = "SELECT * FROM produk WHERE nama_produk LIKE ? OR kategori LIKE ?";
