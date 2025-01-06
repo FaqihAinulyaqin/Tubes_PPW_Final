@@ -16,23 +16,52 @@ const getUserByID = (id) => {
   return conn.execute(QUERY, [id]);
 };
 
-const addUser = async (nama_depan, nama_belakang, username, email, plainPassword) => {
-  const QUERY = "INSERT INTO users (nama_depan, nama_belakang, username, email, password, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
+const addUser = async (
+  nama_depan,
+  nama_belakang,
+  username,
+  email,
+  plainPassword
+) => {
+  const QUERY =
+    "INSERT INTO users (nama_depan, nama_belakang, username, email, password, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
   const salt = 10;
   const hashed = await bcrypt.hash(plainPassword, salt);
-  return conn.execute(QUERY, [nama_depan, nama_belakang, username, email, hashed]);
+  return conn.execute(QUERY, [
+    nama_depan,
+    nama_belakang,
+    username,
+    email,
+    hashed,
+  ]);
 };
 
-const updateFotoProfile = async (id, img_path) => {
-  const QUERY = ""
-}
-
-// 1 FE laravel BE node
-// 2 FE node BE laravel
+const updateProfile = async (
+  id,
+  nama_depan,
+  nama_belakang,
+  no_telpon,
+  alamat,
+  email,
+  img_path
+) => {
+  const QUERY =
+    "UPDATE users SET nama_depan = ?, nama_belakang = ?, no_telpon = ?, alamat = ?, email = ?, img_path = ?, updated_at = NOW() WHERE id = ?";
+  return conn.execute(QUERY, [
+    nama_depan,
+    nama_belakang,
+    no_telpon,
+    alamat,
+    email,
+    img_path,
+    id,
+  ]);
+};
 
 module.exports = {
   getAllUser,
   getUserByEmail,
   getUserByID,
   addUser,
+  updateProfile,
 };

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2024 at 01:30 PM
+-- Generation Time: Jan 03, 2025 at 04:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,6 +44,30 @@ CREATE TABLE `cache_locks` (
   `owner` varchar(255) NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat`
+--
+
+CREATE TABLE `chat` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sender_id` bigint(20) UNSIGNED NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `chat`
+--
+
+INSERT INTO `chat` (`id`, `sender_id`, `message`, `created_at`, `updated_at`) VALUES
+(1, 5, 'HALOOOO', '2025-01-02 15:30:34', NULL),
+(2, 5, 'halo nama kamu siapa', '2025-01-02 15:30:34', NULL),
+(3, 5, 'Namaku Pulu pulu', '2025-01-02 15:30:34', NULL),
+(4, 5, 'Haloo Selamat Siang', '2025-01-02 15:30:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -119,7 +143,16 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (8, '0001_01_01_000001_create_cache_table', 5),
 (9, '0001_01_01_000002_create_jobs_table', 5),
 (10, '2024_12_23_162017_create_users_table', 5),
-(11, '2024_12_28_101540_create_produk', 5);
+(11, '2024_12_28_101540_create_produk', 5),
+(16, '2025_01_01_124947_create_chat_table', 6),
+(17, '2025_01_01_150456_create_produk_table', 6),
+(18, '2025_01_01_150719_create_wishlist_table', 7),
+(19, '2025_01_02_152743_create_produk_table', 8),
+(20, '2025_01_03_084845_create_users_table', 9),
+(21, '2025_01_03_093914_create_users_table', 10),
+(22, '2025_01_03_140342_create_users_table', 11),
+(23, '2025_01_03_140403_create_produk_table', 11),
+(24, '2025_01_03_140733_create_users_table', 12);
 
 -- --------------------------------------------------------
 
@@ -141,12 +174,14 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `produk` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `idPenjual` bigint(20) UNSIGNED NOT NULL,
   `img_path` varchar(255) NOT NULL,
   `nama_produk` varchar(255) NOT NULL,
   `harga_produk` int(11) NOT NULL,
   `stok` int(11) NOT NULL,
   `kategori` varchar(255) NOT NULL,
   `sub_kategori` varchar(255) NOT NULL,
+  `deskripsi` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -155,8 +190,9 @@ CREATE TABLE `produk` (
 -- Dumping data for table `produk`
 --
 
-INSERT INTO `produk` (`id`, `img_path`, `nama_produk`, `harga_produk`, `stok`, `kategori`, `sub_kategori`, `created_at`, `updated_at`) VALUES
-(1, 'images/product/contohproduk.png', 'Kemeja Formal', 420000, 24, 'Fashion', 'Baju', '2024-12-28 10:54:07', NULL);
+INSERT INTO `produk` (`id`, `idPenjual`, `img_path`, `nama_produk`, `harga_produk`, `stok`, `kategori`, `sub_kategori`, `deskripsi`, `created_at`, `updated_at`) VALUES
+(2, 1, 'images/product/gitar.png', 'Gitar Akustik Yamaha Baru', 1350000, 1, 'Alat Musik', 'Gitar', 'Gitar Akustik Yamaha FS400 FS400 menawarkan kualitas dan suara seperti semua alat musik akustik Yamaha yang modern dan elegan. Bentuk bodi concert yang nyaman sangat cocok untuk gitaris muda yang dinamis.', NULL, NULL),
+(3, 1, '/images/product/contohproduk.png', 'Kamera Nikon Second', 5000000, 1, 'Elektronik', 'Kamera', 'Kamera Nikon D550 masih mulus, sudah fullset dengan lensa', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -178,9 +214,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('AIB4npvfL1CKwK2fq0If6Skt3CdFZpbRW1DByKwd', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiN0k1RlFOTnh4WWdQZlpvbXIxWk9wR2x6M0tyMzlrUThWZ0Y4WkkwbyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1735388160),
-('bk6OlHkXPN6eAQkMok5yMtPIbTAbHC4BMNCPsuzh', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNHZoYm9INVVtNGxVT3VFeXVpYnN5SndhUmdFblZQOVZDdEpWS0NVdCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1735363669),
-('sPFssPXHsaf58rWlvRb0ERj22LaTibERffykc4ZE', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiT0V6MDZ3aXlERkZBVll0QUE4N1YwQjJkYnM1RGN2OGNyRkFxUUY5TiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9zaWdudXAiO319', 1734972520);
+('T4OEcRJUkytSCWD9KEcio1ihrDuHOSvxuKV6F1th', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0', 'YTo5OntzOjY6Il90b2tlbiI7czo0MDoiZnd4Q1JidU9PSFViNlhKa2NaRzh5SkNKOXBQTURxbWNvNlFnWnprUyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjc6InVzZXJfaWQiO2k6MTtzOjEwOiJwcm9maWxlUGljIjtzOjE5OiIvaW1hZ2VzL2F1dGgvUFAucG5nIjtzOjg6InVzZXJuYW1lIjtzOjk6Imx2c25mbHdycyI7czo1OiJlbWFpbCI7czoxODoiaGVsbXkxMTJAZ21haWwuY29tIjtzOjU6InRva2VuIjtzOjEzNzoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBaQ0k2TVN3aWFXRjBJam94TnpNMU9URTFORFF3TENKbGVIQWlPakUzTXpVNU1qSTJOREI5LkI0cWNQTC1RTUEzemVUaGU0T2Q0c295QXVJclE1QkJCZXBncE9YaG5nN1UiO3M6Nzoibm9tb3JXQSI7czoxMjoiMDg3ODMwMTU0MzgwIjt9', 1735918810);
 
 -- --------------------------------------------------------
 
@@ -190,9 +224,11 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `profilePic` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `nomorWA` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -201,8 +237,22 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'irham25', 'irham@gmail.com', '$2b$10$d7XLoSGqGyzrkIyBuVDjPudI.2Zz372go4rearjYzjQTG4ApSqtZy', '0000-00-00 00:00:00', NULL);
+INSERT INTO `users` (`id`, `profilePic`, `username`, `email`, `password`, `nomorWA`, `created_at`, `updated_at`) VALUES
+(1, '/images/auth/PP.png', 'lvsnflwrs', 'helmy112@gmail.com', '$2b$10$fmrTkMnWKzHq2YAef36XqepDN4EtwTaMiubZX2sGxOcOETFpNoCQS', '087830154380', '0000-00-00 00:00:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlists`
+--
+
+CREATE TABLE `wishlists` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
@@ -219,6 +269,13 @@ ALTER TABLE `cache`
 --
 ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`);
+
+--
+-- Indexes for table `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `chat_sender_id_foreign` (`sender_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -256,7 +313,8 @@ ALTER TABLE `password_reset_tokens`
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `produk_idpenjual_foreign` (`idPenjual`);
 
 --
 -- Indexes for table `sessions`
@@ -274,8 +332,22 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `wishlists_user_id_foreign` (`user_id`),
+  ADD KEY `wishlists_product_id_foreign` (`product_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -293,19 +365,48 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `chat`
+--
+ALTER TABLE `chat`
+  ADD CONSTRAINT `chat_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `produk`
+--
+ALTER TABLE `produk`
+  ADD CONSTRAINT `produk_idpenjual_foreign` FOREIGN KEY (`idPenjual`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD CONSTRAINT `wishlists_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `produk` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `wishlists_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

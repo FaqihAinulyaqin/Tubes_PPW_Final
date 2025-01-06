@@ -1,72 +1,69 @@
+require("dotenv").config();
 const modelUser = require("../models/users");
-const {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} = require("firebase/storage");
-const firebaseConfig = require("../config/firebase.config");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const getAllUser = async (req, res) => {
+const signup = async (req, res) => {
+  const { nama_depan, nama_belakang, username, email, password } = req.body;
   try {
-    const [dataUser] = await modelUser.getAllUser();
-    if (dataUser.length > 0) {
-      res
-        .status(200)
-        .json({ message: "menampilkan semua data user", data: dataUser });
-    } else {
-      res.status(200).json({ message: "tidak ada data user" });
+    const [cekUser] = await modelUser.getUserByEmail(email);
+
+    if (cekUser.length > 0) {
+      return res.status(400).json({
+        message: "email sudah terdaftar",
+        success: false,
+      });
     }
+
+    await modelUser.addUser(nama_depan, nama_belakang, username, email, password);
+    res.status(200).json({ message: "User registered successfully" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "server error", error: error.message });
+    console.log(error)
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-const updateFotoProfile = async (req, res) => {
-  const { id } = req.params;
-  const foto = req.file;
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const [userData] = await modelUser.getUserByID(id);
-    const found = userData[0];
-
-    if (!found) {
-      return res.status(404).json({ message: "User tidak ditemukan." });
-    }
-
-    const { img_path } = found;
-    if (img_path) {
-      const filePath = img_path.split("/o/")[1].split("?")[0];
-      const decodedPath = decodeURIComponent(filePath);
-
-      const { firebaseStorage } = await firebaseConfig();
-      const fileRef = ref(firebaseStorage, decodedPath);
-
-      try {
-        await deleteObject(fileRef);
-      } catch (err) {
-        console.error("Gagal menghapus gambar lama:", err.message);
-        return res.status(500).json({
-          message: "Gagal menghapus gambar lama.",
-          error: err.message,
+    const [found] = await modelUser.getUserByEmail(email);
+    if (found.length > 0) {
+      const user = found[0];
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+          expiresIn: "2h",
+        });
+        return res.status(200).json({
+          message: "Login successful",
+          token,
         });
       }
     }
-
-    const profilePictURL = await uploadNewProfilePicture(foto);
-    await pelamarModel.updateProfilePictPelamar(profilePictURL, idPelamar);
-
-    res.status(200).json({
-      message: "Profile berhasil diperbarui.",
+    return res.status(400).json({
+      message: "Username or password is incorrect",
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Terjadi kesalahan saat memperbarui profil perusahaan.",
-      serverMessage: error.message,
-    });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-module.exports = { getAllUser };
+const me = async (req, res) => {
+  try {
+    const [response] = await modelUser.getUserByID(req.id);
+    if (response.length > 0) {
+      return res.status(200).json({ message: "User found", data: response });
+    }
+    return res.status(404).json({ message: "User not found", data: null });
+  } catch (error) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+};
+
+module.exports = {
+  login,
+  me,
+  signup,
+};
