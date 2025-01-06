@@ -71,6 +71,21 @@ main{
     align-items: center;
 }
 
+.imageuser{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.imageuser button {
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
 .fotouser{
     width: 100px;
     height: 100px;
@@ -126,9 +141,11 @@ form textarea{
     font-size: 15px;
     color: white;
     text-transform: capitalize;
+    cursor: pointer;
 }
 
 .save{
+    cursor: pointer;
     width: 150px;
     height: 30px;
     border-radius: 15px;

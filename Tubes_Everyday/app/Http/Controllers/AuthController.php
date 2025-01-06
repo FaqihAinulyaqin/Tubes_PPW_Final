@@ -101,7 +101,6 @@ class AuthController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
             ])->get('http://localhost:3000/api/auth/me');
-            Log::info('API Response:', $response->json());
             if ($response->successful()) {
 
                 return $response->json();
