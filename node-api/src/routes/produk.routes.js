@@ -4,7 +4,7 @@ const produkController = require("../controller/produk.controller");
 
 router.get("/getProduk", produkController.getAllProdukHandler);
 router.get("/getProdukExDesc", produkController.getAllProdukExDescHandler);
-router.get("/getProduk/:id", produkController.getProdukByIdHandler)
+router.get("/getProdukById/:id", produkController.getProdukByIdHandler)
 router.get("/getProduk/:kategori", produkController.getProdukByCategoryHandler);
 router.get("/getCategory", produkController.getCategoryHandler);
 router.post("/addProduk", produkController.addProdukHandler);

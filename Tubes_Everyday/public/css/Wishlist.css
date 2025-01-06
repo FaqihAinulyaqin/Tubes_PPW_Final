@@ -1,40 +1,98 @@
+html{
+    scroll-behavior: smooth;
+}
 body {
     font-family: Arial, sans-serif;
+    background-color: #ECEDFC;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
 }
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.container.header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 50px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
 }
-
-.container.header img {
+.header img {
     height: 40px;
 }
-
-.container.header a {
-    color: white;
-    text-decoration: none;
+.header .nav {
+    display: flex;
+    align-items: center;
+}
+.header .nav a {
     margin: 0 10px;
-    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+.header .nav a.sell {
+    border: 1px solid black;
+    padding: 5px 20px;
+    border-radius: 20px;
+}
+.dropdown {
+    bottom: 15px;
+    left: 10px;
+    position: relative;
+    display: inline-block;
+    color: black;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px #000000 solid;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1;
+}
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 
-.container.header a:hover {
-    text-decoration: underline;
+.search-form {
+    position: relative;
+    margin-right: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.search-form input[type="text"] {
+    padding: 10px 20px;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    outline: none;
+    width: 700px; 
+    transition: border-color 0.3s ease;
+}
+
+.search-form input[type="text"]:focus {
+    border-color: #007bff;
+}
+
+.search-form .search-button {
+    position: absolute;
+    left: 700px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.search-form .search-button:hover {
+    color: #007bff; 
 }
 
 .container.wishlist {
@@ -42,10 +100,10 @@ body {
 }
 
 .container.wishlist h2 {
-    text-align: center;
     color: #333;
     margin-bottom: 20px;
     font-size: 24px;
+    margin-left: 50px;
 }
 
 .row {

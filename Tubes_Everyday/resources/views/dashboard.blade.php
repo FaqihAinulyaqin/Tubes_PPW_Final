@@ -31,7 +31,7 @@
             </form>
         </div>
         <div class="nav">
-            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="{{ route('ShowWishlistPage') }}"><i class="fas fa-heart"></i></a>
             <a href="#"><i class="fas fa-user"></i>  </a>
             <a class="sell" href="{{ route('ShowAddProduk') }}">Sell</a>
         </div>
@@ -99,7 +99,6 @@
                             rows += `
                                 <td>
                                     <div class="product-item">
-                                        <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                                         <div class="product-image">
                                             <img alt="Product Image" height="200" src="${productImage}" width="auto" />
                                         </div>
@@ -165,7 +164,6 @@
                                 rows += `
                                     <td>
                                         <div class="product-item">
-                                            <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                                             <div class="product-image">
                                                 <img alt="Product Image" height="200" src="${productImage}" width="auto" />
                                             </div>
@@ -173,6 +171,9 @@
                                                 <div class="name">${productName}</div>
                                                 <div class="price">${productPrice}</div>
                                                 <div class="description">${productCategory}</div>
+                                            </div>
+                                            <div class="detail-button">
+                                                <a href="{{ route('halamanProduk') }}?id=${productId}">Lihat Detail</a>
                                             </div>
                                         </div>
                                     </td>
@@ -197,11 +198,6 @@
                     });
             });
         });
-
-        // Fungsi untuk toggle favorit
-        function toggleFavorite(icon) {
-            $(icon).toggleClass('fas far');
-        }
     </script>
 </body>
 </html>

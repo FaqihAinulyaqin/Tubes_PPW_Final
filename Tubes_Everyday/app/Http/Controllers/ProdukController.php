@@ -82,8 +82,6 @@ class ProdukController extends Controller {
         }
     }
 
-    
-
     public function getProduk(Request $request)
     {
         $response = Http::get('http://localhost:3000/api/produk/getProduk');
@@ -141,7 +139,7 @@ class ProdukController extends Controller {
             return redirect()->route('dashboard')->withErrors('ID produk tidak ditemukan.');
         }
 
-        $apiUrl = "http://localhost:3000/api/produk/getProduk/{$productId}";
+        $apiUrl = "http://localhost:3000/api/produk/getProdukById/{$productId}";
         $response = Http::get($apiUrl);
 
         if ($response->failed()) {

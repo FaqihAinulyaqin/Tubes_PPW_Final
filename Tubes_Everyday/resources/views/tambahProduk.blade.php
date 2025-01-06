@@ -117,13 +117,14 @@
         .btn-cancel {
             display: block;
             margin: 20px auto;
-            background-color: #4A63E7;
+            background-color:darkgrey;
             color: #fff;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -175,8 +176,10 @@
             </div>
 
             <div class="form-group buttons">
-                <button type="submit" class="btn-save">Save</button>
-                <button type="button" class="btn-cancel">Cancel</button>
+                <div class="form-group buttons">
+                    <a href="{{ route('dashboard') }}" class="btn-cancel">Cancel</a>
+                    <button type="submit" class="btn-save">Save</button>                    
+                </div>
             </div>
         </form>
     </div>

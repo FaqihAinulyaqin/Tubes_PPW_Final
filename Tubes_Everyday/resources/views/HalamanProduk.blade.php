@@ -48,9 +48,13 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <a href="https://wa.me/{{ $product['penjual_nomorWA'] }}" class="btn btn-dark me-3">Nomor Penjual</a>
-                        <button class="wishlist-button">
-                            <i class="fas fa-heart"></i>
-                        </button>
+                        <form method="POST" action="{{ route('addWishlist') }}">
+                            @csrf 
+                            <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                            <button type="submit" class="wishlist-button">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
                     </div>
                     <div class="d-flex align-items-center text-muted">
                         <i class="fas fa-truck me-2"></i>

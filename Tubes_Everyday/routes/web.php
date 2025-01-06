@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\WishlistController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,10 +24,10 @@ Route::get('/halamanProduk', [ProdukController::class, 'showHalamanProduk'])->na
 Route::post('/addProduk', [ProdukController::class, 'addProduk']);
 Route::get('/ShowAddProduk', [ProdukController::class, 'ShowAddProduk'])->name('ShowAddProduk');
 
-
-// Route::get('/wishlist', [WishlistController::class, 'showWishlist'])->name('Wishlist');    // Get all wishlist items
-// Route::post('/wishlist', [WishlistController::class, 'postWishlist']);   // Add product to wishlist
-// Route::delete('/wishlist/{id}', [WishlistController::class, 'deleteWishlist']); // Delete a wishlist item
+Route::get('/ShowWishlistPage', [WishlistController::class, 'ShowWishlistPage'])->name('ShowWishlistPage');
+Route::get('/Showwishlist', [WishlistController::class, 'showWishlist'])->name('Wishlist');   
+Route::post('/wishlist', [WishlistController::class, 'postWishlist'])->name('addWishlist');   
+Route::delete('/wishlist/{id}', [WishlistController::class, 'deleteWishlist']); 
 
 Route::get('/search', [ProdukController::class, 'search'])->name('search.produk');
 Route::post('/signup', [AuthController::class, 'signup']);
