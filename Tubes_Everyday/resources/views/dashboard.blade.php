@@ -67,7 +67,7 @@
                     } else {
                         categories.forEach(function(item) {
                             const category = item.kategori || "Unknown Category";
-                            $('#kategori-list').append(`<a href="#">${category}</a>`);
+                            $('#kategori-list').append(`<a href="#" data-category="${category}">${category}</a>`); //disini
                         });
                     }
                 })
@@ -137,7 +137,7 @@
                 event.preventDefault();
 
                 const selectedCategory = $(this).data('category');
-                const apiUrlProduk = `/getProduk/${selectedCategory}`;
+                const apiUrlProduk = `http://localhost:3000/api/produk/getProduk/${selectedCategory}`; //disini
 
                 // Kosongkan tabel
                 $('#data-table').empty();
