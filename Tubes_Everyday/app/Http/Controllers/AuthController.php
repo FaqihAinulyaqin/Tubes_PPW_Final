@@ -22,7 +22,7 @@ class AuthController extends Controller
     }
 
     // Menampilkan form Halaman Utama
-    public function showHalamanUtama() 
+    public function showHalamanUtama()
     {
         return view('dashboard');
     }
@@ -30,29 +30,28 @@ class AuthController extends Controller
     // Proses login
     public function login(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
-            'username' => 'required_without:email|string|max:255',
+            'email' => 'required_without:email|string|max:255',
             'password' => 'required',
         ]);
 
-        // Mengirim data login ke API Node.js
         try {
             $response = Http::post('http://localhost:3000/api/auth/login', [
-                'username' => $request->username, // Pastikan request body sesuai dengan API
+                'email' => $request->email,
                 'password' => $request->password,
             ]);
+            $body = json_decode($response->getBody(), true);
+            $token = $body['token'];
 
-            // Periksa jika login berhasil
+            session(['token' => $token]);
+
             if ($response->successful()) {
-                // Jika login berhasil, redirect ke halaman dashboard
-                return redirect()->route('dashboard'); // Ganti dengan route yang sesuai
+
+                return redirect()->route('dashboard');
             }
 
-            // Jika login gagal, kembali dengan error
             return back()->withErrors(['message' => 'Email atau password salah.']);
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan koneksi, beri respons error
             return back()->withErrors(['message' => 'Tidak dapat menghubungi server Node.js.']);
         }
     }
@@ -64,7 +63,8 @@ class AuthController extends Controller
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users', // Menambahkan validasi untuk username
             'email' => 'required|email',
-            'password' => 'required|min:8', // Password confirmation sudah otomatis ada dari form
+            'password' => 'required|min:8',
+            'nomorWA' => 'required|string' // Password confirmation sudah otomatis ada dari form
         ]);
 
         // Mengirim data signup ke API Node.js
@@ -73,6 +73,7 @@ class AuthController extends Controller
                 'username' => $request->username, // Pastikan username disertakan
                 'email' => $request->email,
                 'password' => $request->password,
+                'nomorWA' => $request->nomorWA
             ]);
 
             // Periksa jika signup berhasil
@@ -86,6 +87,29 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             // Jika terjadi kesalahan koneksi, beri respons error
             return back()->withErrors(['message' => 'Tidak dapat menghubungi server Node.js.']);
+        }
+    }
+
+    public function me()
+    {
+        $token = session('token');
+
+        if (!$token) {
+            return back()->withErrors(['message' => 'Token tidak ditemukan, silakan login ulang.']);
+        }
+
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token,
+            ])->get('http://localhost:3000/api/auth/me');
+            if ($response->successful()) {
+
+                return $response->json();
+            }
+
+            return back()->withErrors(['message' => 'Gagal mengambil data dari API.']);
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Terjadi kesalahan saat mengakses API.']);
         }
     }
 }

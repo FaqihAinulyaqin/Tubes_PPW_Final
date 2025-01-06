@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishlistController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,8 +17,24 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
 
 Route::get('/getProduk', [ProdukController::class, 'getProduk']);
+Route::get('/getProdukExDesc', [ProdukController::class, 'getProdukExDesc']);
 Route::get('/getProduk/{kategori}', [ProdukController::class, 'getProdukbyCategory']);
 Route::get('/getCategory', [ProdukController::class, 'getCategory']);
+Route::get('/dashboard', [ProdukController::class, 'showDashboard'])->name('dashboard');
+Route::get('/halamanProduk', [ProdukController::class, 'showHalamanProduk'])->name('halamanProduk');
+Route::post('/addProduk', [ProdukController::class, 'addProduk']);
+Route::get('/ShowAddProduk', [ProdukController::class, 'ShowAddProduk'])->name('ShowAddProduk');
+
+Route::get('/ShowWishlistPage', [WishlistController::class, 'ShowWishlistPage'])->name('ShowWishlistPage');
+Route::get('/Showwishlist', [WishlistController::class, 'showWishlist'])->name('Wishlist');   
+Route::post('/wishlist', [WishlistController::class, 'postWishlist'])->name('addWishlist');   
+Route::delete('/wishlist/{id}', [WishlistController::class, 'deleteWishlist']); 
 
 Route::get('/search', [ProdukController::class, 'search'])->name('search.produk');
 Route::post('/signup', [AuthController::class, 'signup']);
+
+Route::get('/getUserLogin', [AuthController::class, 'me']);
+Route::get('/profilePage', function () {
+    return view('profilePage');
+})->name('profilePage');
+Route::post('/updateProfile', [UserController::class, 'updateProfile'])->name('updateProfile');

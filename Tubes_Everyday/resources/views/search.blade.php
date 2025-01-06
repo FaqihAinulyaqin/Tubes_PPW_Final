@@ -13,7 +13,7 @@
 <body>
 <div class="container header">
     <div>
-        <img alt="Logo" height="40" src="{{ asset('images/auth/Group 39.png') }}" width="40" />
+        <img alt="Logo" height="40" src="{{ asset('images/auth/Group 39.png') }}" width="auto" />
     </div>
     <div class="search-form">
         <form action="{{ route('search.produk') }}" method="GET" id="searchForm">
@@ -43,12 +43,20 @@
                     <div class="product-item">
                         <i class="far fa-heart favorite" onclick="toggleFavorite(this)"></i>
                         <div class="product-image">
-                            <img alt="Product Image" height="200" src="{{ $product['img_path'] ?? 'https://via.placeholder.com/150' }}" width="150" />
-                        </div>
+                            <img 
+                                alt="Product Image" 
+                                height="200" 
+                                src="{{ $product['img_path'] ? asset('images/product/' . $product['img_path']) : 'https://via.placeholder.com/150' }}" 
+                                width="auto" 
+                            />
+                            </div>
                         <div class="info">
                             <div class="name">{{ $product['nama_produk'] ?? 'Unknown Product' }}</div>
                             <div class="price">Rp {{ number_format($product['harga_produk'] ?? 0, 0, ',', '.') }}</div>
                             <div class="description">{{ $product['kategori'] ?? 'Unknown Category' }}</div>
+                        </div>
+                        <div class="detail-button">
+                            <a href="{{ route('halamanProduk') }}?id={{ $product['id'] }}">Lihat Detail</a>
                         </div>
                     </div>
                 </td>

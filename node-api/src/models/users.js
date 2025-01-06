@@ -16,12 +16,42 @@ const getUserByID = (id) => {
   return conn.execute(QUERY, [id]);
 };
 
-const addUser = async (username, email, plainPassword) => {
-  const QUERY = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)";
+const addUser = async (
+  username,
+  email,
+  plainPassword
+) => {
+  const QUERY =
+    "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())";
   const salt = 10;
-  const time = Date.now();
   const hashed = await bcrypt.hash(plainPassword, salt);
-  return conn.execute(QUERY, [username, email, hashed, time]);
+  return conn.execute(QUERY, [
+    username,
+    email,
+    hashed,
+  ]);
+};
+
+const updateProfile = async (
+  id,
+  nama_depan,
+  nama_belakang,
+  no_telpon,
+  alamat,
+  email,
+  img_path
+) => {
+  const QUERY =
+    "UPDATE users SET nama_depan = ?, nama_belakang = ?, no_telpon = ?, alamat = ?, email = ?, img_path = ?, updated_at = NOW() WHERE id = ?";
+  return conn.execute(QUERY, [
+    nama_depan,
+    nama_belakang,
+    no_telpon,
+    alamat,
+    email,
+    img_path,
+    id,
+  ]);
 };
 
 module.exports = {
@@ -29,4 +59,5 @@ module.exports = {
   getUserByEmail,
   getUserByID,
   addUser,
+  updateProfile
 };

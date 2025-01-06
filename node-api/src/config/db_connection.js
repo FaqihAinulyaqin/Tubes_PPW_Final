@@ -10,4 +10,3 @@ const dbConnection = mysql.createPool({
 });
 
 module.exports = dbConnection.promise();
-

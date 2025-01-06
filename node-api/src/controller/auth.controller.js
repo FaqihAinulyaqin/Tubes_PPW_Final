@@ -24,15 +24,13 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const [found] = await modelUser.getUserByEmail(username);
-    console.log('User found:', found); // Debugging log
+    const [found] = await modelUser.getUserByEmail(email);
     if (found.length > 0) {
       const user = found[0];
       const match = await bcrypt.compare(password, user.password);
-      console.log('Password match:', match); // Debugging log
       if (match) {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
           expiresIn: "2h",
@@ -40,6 +38,14 @@ const login = async (req, res) => {
         return res.status(200).json({
           message: "Login successful",
           token,
+        //   user: {
+        //     token: token,
+        //     id: user.id,
+        //     profilePic: user.profilePic,
+        //     username: user.username,
+        //     email: user.email,
+        //     nomorWA: user.nomorWA
+        // }
         });
       }
     }
@@ -54,11 +60,11 @@ const login = async (req, res) => {
 
 const me = async (req, res) => {
   try {
-    const response = await modelUser.getUserByID(req.id);
-    if (!response) {
-      return res.status(404).json({ message: "User not found", data: null });
+    const [response] = await modelUser.getUserByID(req.id);
+    if (response.length > 0) {
+      return res.status(200).json({ message: "User found", data: response });
     }
-    res.status(200).json({ message: "User found", data: response });
+    return res.status(404).json({ message: "User not found", data: null });
   } catch (error) {
     res.status(500).json({ message: error.message, data: null });
   }
