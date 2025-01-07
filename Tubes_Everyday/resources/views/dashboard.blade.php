@@ -17,7 +17,7 @@
     <div class="container header">
         <div>
             <a href="/dashboard">
-                <img alt="Logo" height="40" src="{{ asset('images/auth/Group 39.png') }}" width="40" />
+                <img alt="Logo" height="40" src="{{ asset('images/auth/Group 39.png') }}" width="auto" />
             </a>
             <div class="dropdown">
                 <a>Kategori <i class="fas fa-chevron-down"></i></a>
@@ -38,17 +38,6 @@
             <a href="{{ route('ShowWishlistPage') }}"><i class="fas fa-heart"></i></a>
             <a href="/profilePage" id="username"><i class="fas fa-user"></i> </a>
             <a class="sell" href="{{ route('ShowAddProduk') }}">Sell</a>
-        </div>
-    </div>
-    <div class="container promo">
-        <div>
-            <div class="promo-description">
-                Promo Description
-            </div>
-            <button class="buy-now">Buy Now</button>
-        </div>
-        <div class="ongoing-promo">
-            Ongoing Promo
         </div>
     </div>
     <div class="recommendation">
@@ -176,49 +165,50 @@
                             );
                         } else {
                             let rows = '';
-                            let rowCount = 0;
-                            products.forEach(function(item) {
-                                const productName = item.nama_produk || "Unknown Product";
-                                const productImage = `/images/product/${item.img_path}`;
-                                const productPrice = item.harga_produk ?
-                                    `Rp ${parseInt(item.harga_produk).toLocaleString()}` :
-                                    "Price not available";
-                                const productCategory = item.kategori || "Unknown Category";
+                        let rowCount = 0;
+                        products.forEach(function(item) {
+                            const productId = item.id;
+                            const productName = item.nama_produk || "Unknown Product";
+                            const productImage = `/images/product/${item.img_path}`;
+                            const productPrice = item.harga_produk ?
+                                `Rp ${parseInt(item.harga_produk).toLocaleString()}` :
+                                "Price not available";
+                            const productCategory = item.kategori || "Unknown Category";
 
-                                if (rowCount === 0) {
-                                    rows += '<tr>';
-                                }
-
-                                rows += `
-                                    <td>
-                                        <div class="product-item">
-                                            <div class="product-image">
-                                                <img alt="Product Image" height="200" src="${productImage}" width="auto" />
-                                            </div>
-                                            <div class="info">
-                                                <div class="name">${productName}</div>
-                                                <div class="price">${productPrice}</div>
-                                                <div class="description">${productCategory}</div>
-                                            </div>
-                                            <div class="detail-button">
-                                                <a href="{{ route('halamanProduk') }}?id=${productId}">Lihat Detail</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                `;
-
-                                rowCount++;
-                                if (rowCount === 4) {
-                                    rows += '</tr>';
-                                    rowCount = 0;
-                                }
-                            });
-
-                            if (rowCount > 0) {
-                                rows += '</tr>';
+                            if (rowCount === 0) {
+                                rows += '<tr>';
                             }
 
-                            $('#data-table').append(rows);
+                            rows += `
+                                <td>
+                                    <div class="product-item">
+                                        <div class="product-image">
+                                            <img alt="Product Image" height="200" src="${productImage}" width="auto" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="name">${productName}</div>
+                                            <div class="price">${productPrice}</div>
+                                            <div class="description">${productCategory}</div>
+                                        </div>
+                                        <div class="detail-button">
+                                            <a href="{{ route('halamanProduk') }}?id=${productId}">Lihat Detail</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            `;
+
+                            rowCount++;
+                            if (rowCount === 4) {
+                                rows += '</tr>';
+                                rowCount = 0;
+                            }
+                        });
+
+                        if (rowCount > 0) {
+                            rows += '</tr>';
+                        }
+
+                        $('#data-table').append(rows);
                         }
                     })
                     .fail(function() {

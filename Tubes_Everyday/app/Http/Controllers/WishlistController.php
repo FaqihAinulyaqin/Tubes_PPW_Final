@@ -11,7 +11,7 @@ class WishlistController extends Controller
     public function ShowWishlistPage()
     {
         $response = Http::get('http://localhost:3000/api/wishlist/getWishlistByUser', [
-            'user_id' => auth()->id(),
+            // 'user_id' => auth()->id(),
         ]);
     
         if ($response->ok()) {
@@ -59,16 +59,17 @@ class WishlistController extends Controller
         return response()->json(['message' => 'Failed to add product to wishlist', 'error' => $response->body()], 500);
     }
 
-    public function deleteWishlist($id)
+    public function deleteWishlist(Request $request)
     {
-        $response = Http::delete("http://localhost:3000/api/wishlist/removeWishlist/:id", [
-            'user_id' => auth()->id(),
-        ]);
-
+        $id = $request->input('id');
+    
+        $response = Http::delete("http://localhost:3000/api/wishlist/removeWishlist/$id");
+    
         if ($response->ok()) {
-            return response()->json($response->json());
+            return response()->json(['success' => true, 'message' => 'Wishlist item removed successfully']);
         }
-
+    
         return response()->json(['message' => 'Failed to delete wishlist item', 'error' => $response->body()], 500);
     }
+    
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -44,7 +45,8 @@ class AuthController extends Controller
             $body = json_decode($response->getBody(), true);
             $token = $body['token'];
 
-            session(['token' => $token]);
+            session(
+                ['token' => $token]);
 
             if ($response->successful()) {
 
@@ -112,6 +114,18 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['message' => 'Terjadi kesalahan saat mengakses API.']);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+        return redirect()->route('login');
     }
 }
 
