@@ -130,8 +130,12 @@ const getWishlistByUserHandler = async (req, res) => {
 
 const removeWishlistHandler = async (req, res) => {
   const { id } = req.params;
+
   try {
-    console.log("Wishlist ID yang diterima:", id);
+    const [found] = await modelWishlist.getWishlistByID(id);
+    if (found.length === 0) {
+      return res.status(404).json({ message: "Wishlist item not found" });
+    }
 
     const result = await modelWishlist.removeWishlist(id);
     console.log("Result from removeWishlist:", result);
@@ -144,6 +148,7 @@ const removeWishlistHandler = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 
 module.exports = {
