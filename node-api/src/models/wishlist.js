@@ -23,8 +23,8 @@ const addWishlist = (user_id, product_id) => {
   );
 };
 
-const removeWishlist = (wishlistId) => {
-  return db.execute("DELETE FROM wishlists WHERE id = ?", [wishlistId]);
+const removeWishlist = (id) => {
+  return db.execute("DELETE FROM wishlists WHERE id = ?", [id]);
 };
 
 const getWishlistByUser = (user_id) => {
