@@ -20,40 +20,6 @@ const getAllWishlistHandler = async (req, res) => {
   }
 };
 
-// const addWishlistHandler = async (req, res) => {
-//   const { userId, productId } = req.body; 
-
-//   if (!userId || !productId) {
-//     return res.status(400).json({ message: "userId dan productId diperlukan" });
-//   }
-  
-//   try {
-//     const [existing] = await modelWishlist.getWishlistByUserAndProduct(
-//       userId,
-//       productId
-//     );
-//     if (existing.length > 0) {
-//       return res.status(409).json({
-//         message: "Produk sudah ada di wishlist",
-//       });
-//     }
-
-//     const result = await modelWishlist.addWishlist(userId, productId);
-//     if (result.affectedRows > 0) {
-//       return res.status(201).json({
-//         message: "Produk berhasil ditambahkan ke wishlist",
-//       });
-//     }
-
-//     return res.status(400).json({
-//       message: "Gagal menambahkan produk ke wishlist",
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Server error", error: error.message });
-//   }
-
-// };
 
 const addWishlistHandler = async (req, res) => {
   const { product_id } = req.body;
@@ -130,8 +96,12 @@ const getWishlistByUserHandler = async (req, res) => {
 
 const removeWishlistHandler = async (req, res) => {
   const { id } = req.params;
+
   try {
-    console.log("Wishlist ID yang diterima:", id);
+    const [found] = await modelWishlist.getWishlistByID(id);
+    if (found.length === 0) {
+      return res.status(404).json({ message: "Wishlist item not found" });
+    }
 
     const result = await modelWishlist.removeWishlist(id);
     console.log("Result from removeWishlist:", result);
@@ -144,6 +114,7 @@ const removeWishlistHandler = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 
 module.exports = {
