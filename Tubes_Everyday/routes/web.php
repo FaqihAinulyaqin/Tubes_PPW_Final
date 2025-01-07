@@ -27,7 +27,7 @@ Route::get('/ShowAddProduk', [ProdukController::class, 'ShowAddProduk'])->name('
 Route::get('/ShowWishlistPage', [WishlistController::class, 'ShowWishlistPage'])->name('ShowWishlistPage');
 Route::get('/Showwishlist', [WishlistController::class, 'showWishlist'])->name('Wishlist');   
 Route::post('/wishlist', [WishlistController::class, 'postWishlist'])->name('addWishlist');   
-Route::delete('/wishlist/{id}', [WishlistController::class, 'deleteWishlist']); 
+Route::delete('/wishlist/:id', [WishlistController::class, 'deleteWishlist'])->name('removeWishlist');   
 
 Route::get('/search', [ProdukController::class, 'search'])->name('search.produk');
 Route::post('/signup', [AuthController::class, 'signup']);
