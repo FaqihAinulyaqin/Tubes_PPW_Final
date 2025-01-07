@@ -105,7 +105,7 @@
         function toggleFavorite(element, id) {
             $.ajax({
                 url: '{{ route('removeWishlist') }}',
-                type: 'DELETE',
+                type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
                     id: id

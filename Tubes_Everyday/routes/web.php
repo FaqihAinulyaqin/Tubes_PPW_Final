@@ -38,4 +38,3 @@ Route::get('/profilePage', function () {
     return view('profilePage');
 })->name('profilePage');
 Route::post('/updateProfile', [UserController::class, 'updateProfile'])->name('updateProfile');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
