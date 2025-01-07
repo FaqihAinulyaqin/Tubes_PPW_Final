@@ -11,7 +11,7 @@ class WishlistController extends Controller
     public function ShowWishlistPage()
     {
         $response = Http::get('http://localhost:3000/api/wishlist/getWishlistByUser', [
-            'user_id' => auth()->id(),
+            // 'user_id' => auth()->id(),
         ]);
     
         if ($response->ok()) {

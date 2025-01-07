@@ -60,26 +60,6 @@ body {
 .dropdown:hover .dropdown-content {
     display: block;
 }
-.promo {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: white;
-    margin: 20px;
-    border-radius: 10px;
-}
-.promo .promo-description {
-    font-size: 24px;
-}
-.promo .buy-now {
-    background-color: #4A63E7;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
 .recommendation {
     padding: 20px;
 }

@@ -11,38 +11,24 @@
 </head>
 
 <body>
-    <Nav>
-        <div class="logo">
-            <div class="img">
-                <a href="/dashboard">
-                    <img alt="Logo" src="{{ asset('images/auth/Group 39.png') }}" />
-
-                </a>
-            </div>
+    <div class="container header">
+        <div>
+            <a href="/dashboard">
+                <img alt="Logo" height="40" src="{{ asset('images/auth/Group 39.png') }}" width="auto" />
+            </a>
             <div class="dropdown">
-                <select name="cars" id="dropdwn">
-                    <option value="volvo">kategori</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
-                </select>
-
+                <a>Kategori <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content" id="kategori-list">
+                    <!-- Data Kategori akan dimuat di sini -->
+                </div>
             </div>
         </div>
-        <div class="container">
-            <div class="icons">
-                <a href="#"><i class="fas fa-heart"></i></a>
-            </div>
-
-            <div class="namauser">
-                <a href="/profilePage" class="namauser" id="username"><i class="fas fa-user"></i> </a>
-            </div>
-
-            <div class="btnsell">
-                <button>sell</button>
-            </div>
+        <div class="nav">
+            <a href="{{ route('ShowWishlistPage') }}"><i class="fas fa-heart"></i></a>
+            <a href="/profilePage" id="username"><i class="fas fa-user"></i> </a>
+            <a class="sell" href="{{ route('ShowAddProduk') }}">Sell</a>
         </div>
-    </Nav>
+    </div>
     <main>
         {{-- <div class="profile">
             <h1>profile</h1>
@@ -79,7 +65,6 @@
                 <textarea name="alamat" id="alamat"></textarea>
 
                 <div class="btn">
-                    <button class="logout">logout</button>
                     <button type="submit" class="save">save</button>
                 </div>
             </form>

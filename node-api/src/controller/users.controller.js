@@ -1,3 +1,4 @@
+require("dotenv").config();
 const modelUser = require("../models/users");
 const {
   getStorage,
@@ -21,7 +22,7 @@ const getAllUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "server error", error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

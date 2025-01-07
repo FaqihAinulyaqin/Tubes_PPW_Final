@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { nama_depan, nama_belakang, username, email, password } = req.body;
   try {
     const [cekUser] = await modelUser.getUserByEmail(email);
 
@@ -15,7 +15,7 @@ const signup = async (req, res) => {
       });
     }
 
-    await modelUser.addUser(username, email, password);
+    await modelUser.addUser(nama_depan, nama_belakang, username, email, password);
     res.status(200).json({ message: "User registered successfully" });
   } catch (error) {
     console.log(error)
