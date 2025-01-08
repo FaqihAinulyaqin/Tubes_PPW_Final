@@ -26,32 +26,18 @@ const getWishlistHandler = async (req, res) => {
 
 // Menambahkan item ke wishlist
 const addWishlistHandler = async (req, res) => {
-  const { product_id } = req.body;
-  const token = req.headers["authorization"]?.split(" ")[1];
-
-  if (!token) {
-    return res.status(403).json({ message: "Token tidak ditemukan" });
-  }
-
-  if (!product_id) {
-    return res.status(400).json({ message: "Semua field wajib diisi" });
-  }
+  const {  product_id } = req.params;
+  const user_id = req.id;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const user_id = decoded.id;
-
-    // Cek apakah produk sudah ada di wishlist
     const [existing] = await modelWishlist.searchWishlist(user_id, product_id);
     if (existing.length > 0) {
       return res.status(409).json({ message: "Produk sudah ada di wishlist" });
     }
 
     const [result] = await modelWishlist.addWishlist(user_id, product_id);
-    console.log("Hasil addWishlist:", result);
-
     if (result.affectedRows > 0) {
-      return res.status(201).json({ message: "Wishlist berhasil ditambahkan" });
+      return res.status(200).json({ message: "Wishlist berhasil ditambahkan" });
     }
 
     return res.status(400).json({ message: "Gagal menambahkan Wishlist" });
@@ -71,12 +57,8 @@ const removeWishlistHandler = async (req, res) => {
   }
 
   try {
-    console.log("ID yang diterima:", id);
-
-    // Menghapus item dari wishlist
     const result = await modelWishlist.removeWishlist(id); // Menggunakan id
-    console.log("Result from removeWishlist:", result);
-
+ 
     if (result.affectedRows > 0) {
       return res.status(200).json({
         message: `Produk dengan ID ${id} telah dihapus.`,

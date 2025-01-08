@@ -40,6 +40,15 @@ const updateProfile = async (req, res) => {
   try {
     const [userData] = await modelUser.getUserByID(id);
     const found = userData[0];
+    const RS = {
+      id,
+      nama_depan,
+      nama_belakang,
+      email ,
+      no_telpon,
+      alamat ,
+    }
+    console.log(RS)
     if (!found) {
       return res.status(404).json({ message: "User tidak ditemukan." });
     }

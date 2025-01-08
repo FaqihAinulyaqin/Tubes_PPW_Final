@@ -4,16 +4,16 @@ const db = require("../config/db_connection");
 const getWishlist = (user_id) => {
   const QUERY = `
     SELECT 
-      wishlists.user_id, 
+      wishlist.user_id, 
       produk.id AS product_id, 
       produk.img_path AS product_imgPath, 
       produk.nama_produk AS product_namaProduk, 
       produk.harga_produk AS product_hargaProduk, 
       produk.kategori AS product_kategori, 
       produk.sub_kategori AS product_subKategori
-    FROM wishlists
-    LEFT JOIN produk ON wishlists.product_id = produk.id 
-    WHERE wishlists.user_id = ?`;
+    FROM wishlist
+    LEFT JOIN produk ON wishlist.product_id = produk.id 
+    WHERE wishlist.user_id = ?`;
   try {
     return db.execute(QUERY, [user_id]);
   } catch (error) {
@@ -24,7 +24,7 @@ const getWishlist = (user_id) => {
 
 const addWishlist = (user_id, product_id) => {
   const QUERY = `
-    INSERT INTO wishlists (user_id, product_id) VALUES (?, ?)`;
+    INSERT INTO wishlist (user_id, product_id, created_at) VALUES (?, ?, NOW())`;
   try {
     return db.execute(QUERY, [user_id, product_id]);
   } catch (error) {
@@ -36,11 +36,11 @@ const addWishlist = (user_id, product_id) => {
 const removeWishlist = async (id) => {
   const checkQuery = `
     SELECT COUNT(*) AS count 
-    FROM wishlists 
+    FROM wishlist 
     WHERE id = ?`;
   
   const deleteQuery = `
-    DELETE FROM wishlists 
+    DELETE FROM wishlist 
     WHERE id = ?`;
   
   try {
@@ -63,7 +63,7 @@ const removeWishlist = async (id) => {
 
 const searchWishlist = async (user_id, product_id) => {
   const QUERY = `
-    SELECT * FROM wishlists 
+    SELECT * FROM wishlist 
     WHERE user_id = ? AND product_id = ?`;
   try {
     return db.execute(QUERY, [user_id, product_id]);
